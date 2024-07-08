@@ -1,0 +1,186 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencyLocking {
+        lockAllConfigurations()
+    }
+}
+
+plugins {
+    id "java-test-fixtures"
+    id 'org.springframework.boot' version 'latest.release' apply false
+    id 'io.spring.dependency-management' version 'latest.release' apply false
+}
+
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    group = 'de.cronn'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    bootJar {
+        enabled = false
+    }
+
+    bootRun {
+        enabled = false
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs.addAll(['-Werror'])
+    }
+
+    dependencies {
+        implementation 'org.springframework:spring-context'
+        implementation 'org.springframework.boot:spring-boot-autoconfigure'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-params'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        testRuntimeOnly 'ch.qos.logback:logback-classic'
+
+        components.all { ComponentMetadataDetails details ->
+            if (details.id.version =~ /(?i).+([-.])(CANDIDATE|RC|BETA|ALPHA|CR\d+|M\d+).*/) {
+                details.status = 'milestone'
+            }
+        }
+
+        dependencyLocking {
+            lockAllConfigurations()
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+
+        maxHeapSize = "256m"
+
+        inputs.dir('data/test/validation')
+        outputs.dir('data/test/output')
+        outputs.dir('data/test/tmp')
+    }
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.slf4j:jul-to-slf4j'
+
+    api 'org.liquibase:liquibase-core'
+    implementation 'org.testcontainers:jdbc'
+
+    implementation 'org.hibernate.orm:hibernate-core'
+
+    testFixturesApi 'org.assertj:assertj-core'
+    testFixturesApi 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testFixturesApi 'de.cronn:test-utils:latest.release'
+    testFixturesApi 'de.cronn:validation-file-assertions:latest.release'
+}
+
+// Disable publication of test fixtures as documented on https://docs.gradle.org/8.8/userguide/java_testing.html#sec:java_test_fixtures
+components.java.withVariantsFromConfiguration(configurations.testFixturesApiElements) { skip() }
+components.java.withVariantsFromConfiguration(configurations.testFixturesRuntimeElements) { skip() }
+
+wrapper {
+    gradleVersion = "8.9"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+    dependsOn test
+}
+
+allprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                version = project.version
+                pom {
+                    name = project.name
+                    description = 'Liquibase Changelog Generator'
+                    url = 'https://github.com/cronn/liquibase-changelog-generator'
+
+                    licenses {
+                        license {
+                            name = "The Apache Software License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                            distribution = "repo"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = "benedikt.waldvogel"
+                            name = "Benedikt Waldvogel"
+                            email = "benedikt.waldvogel@cronn.de"
+                        }
+                    }
+
+                    scm {
+                        url = "https://github.com/cronn/liquibase-changelog-generator"
+                    }
+                }
+
+                from components.java
+
+                artifact sourcesJar
+                artifact javadocJar
+
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                credentials {
+                    username = project.hasProperty('nexusUsername') ? project.property('nexusUsername') : System.getenv('NEXUS_USERNAME')
+                    password = project.hasProperty('nexusPassword') ? project.property('nexusPassword') : System.getenv('NEXUS_PASSWORD')
+                }
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
+    }
+}

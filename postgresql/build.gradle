@@ -1,0 +1,8 @@
+dependencies {
+    api rootProject
+
+    runtimeOnly 'org.testcontainers:postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation testFixtures(rootProject)
+}

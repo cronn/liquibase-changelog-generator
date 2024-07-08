@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="Jane Doe" id="create-schema">
+        <createTable tableName="test_entity">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_test_entity"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="other_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="name" constraintName="test_entity_name_key" tableName="test_entity"/>
+
+        <createTable tableName="other_entity">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_other_entity"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="other_id" baseTableName="test_entity" constraintName="fk_test_entity_other_entity" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="other_entity" validate="true"/>
+
+        <sql>create type Count as enum ('ONE','THREE','TWO')</sql>
+        <sql>create type Size as enum ('L','M','S','XL','XS')</sql>
+        <sql>create type Color as enum ('BLUE','GREEN','RED')</sql>
+
+        <createTable tableName="entity_with_enum1">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_with_enum1"/>
+            </column>
+            <column name="count" type="COUNT"/>
+            <column name="size" type="SIZE"/>
+        </createTable>
+
+        <createTable tableName="entity_with_enum2">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_with_enum2"/>
+            </column>
+            <column name="color" type="COLOR"/>
+            <column name="count" type="COUNT"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
