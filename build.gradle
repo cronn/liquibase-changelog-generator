@@ -74,6 +74,13 @@ allprojects {
         outputs.dir('data/test/output')
         outputs.dir('data/test/tmp')
     }
+
+    jacocoTestReport {
+        reports {
+            xml.required = true
+        }
+        dependsOn test
+    }
 }
 
 dependencies {
@@ -98,13 +105,6 @@ components.java.withVariantsFromConfiguration(configurations.testFixturesRuntime
 wrapper {
     gradleVersion = "8.9"
     distributionType = Wrapper.DistributionType.ALL
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = true
-    }
-    dependsOn test
 }
 
 allprojects {
