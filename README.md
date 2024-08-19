@@ -75,6 +75,30 @@ As a developer, you typically follow these steps when you want to change or exte
     In such cases, you need to adjust the changeset manually.
 5. **Re-run the Test**: Re-run the `LiquibaseTest` and check that the test now succeeds.
 
+## Known-Issue: Column Order of Composite Primary Keys
+
+Unfortunately, Hibernate's schema generation applies an alphabetical ordering to all columns.
+This can result in incorrect column order when using composite primary keys.
+Our bug report [HHH-17065](https://hibernate.atlassian.net/browse/HHH-17065) was closed as "Won’t Fix" by the Hibernate team.
+
+Fortunately, there’s a workaround: you can switch the column order strategy back to the previous behavior:
+
+#### `src/main/resources/liquibase-test-hibernate.properties`
+```properties
+# This is a workaround for a composite primary key column order regression in Hibernate 6.2
+# See https://hibernate.atlassian.net/browse/HHH-17065
+spring.jpa.properties.hibernate.column_ordering_strategy=legacy
+```
+
+This property only needs to be set for the configuration class used in the Hibernate-populated Spring context:
+
+```java
+@EntityScan("de.cronn.example")
+@PropertySource("classpath:/liquibase-test-hibernate.properties")
+static class HibernatePopulatedConfig extends HibernatePopulatedConfigForPostgres {
+}
+```
+
 ## Additional Notes
 
 The test performs some automatic post-processing of the diff. For example, it overrides the Hibernate-generated
