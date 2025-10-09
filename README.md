@@ -7,7 +7,7 @@
 # Liquibase Changelog Generator #
 
 The `liquibase-changelog-generator` library implements an auto-generation of Liquibase changelogs
-based on the Hibernate metamodel. The library was designed to be used in a JUnit test.
+based on the JPA/Hibernate entities. The library was designed to be used in a JUnit test.
 
 ## Usage
 
