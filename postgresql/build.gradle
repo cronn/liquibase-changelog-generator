@@ -4,5 +4,7 @@ dependencies {
     runtimeOnly 'org.testcontainers:postgresql'
     runtimeOnly 'org.postgresql:postgresql'
 
+    testRuntimeOnly 'org.hibernate.orm:hibernate-vector:[6.6, 7.0)'
+
     testImplementation testFixtures(rootProject)
 }
