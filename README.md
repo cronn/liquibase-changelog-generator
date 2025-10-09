@@ -128,9 +128,9 @@ class HibernateSchemaTest implements JUnit5ValidationFileAssertions {
 ## Requirements ##
 
 - Java 17+
-- Spring Boot 3.3.1+
-- Liquibase 4.27.0+
-- Hibernate 6.5.2+
+- Spring Boot 3.5.6+
+- Liquibase 4.31.1+
+- Hibernate 6.6.29+
 
 ## Related Projects ##
 
