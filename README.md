@@ -13,7 +13,7 @@ based on the JPA/Hibernate entities. The library was designed to be used in a JU
 
 Depending on the database, you need to add the following Maven **test** dependency to your project:
 
-### PostgreSQL
+### PostgreSQL / pgvector
 
 ```xml
 <dependency>
@@ -61,6 +61,47 @@ Then define the path to the Liquibase changelog via `src/test/resources/liquibas
 
 ```properties
 spring.liquibase.change-log=classpath:/migrations/changelog.xml
+```
+
+## pgvector
+
+The library also supports pgvector in case you use the [hibernate-vector][hibernate-vector] module for `VECTOR` columns.
+
+We provide the two configuration classes `HibernatePopulatedConfigForPgVector` and `LiquibasePopulatedConfigForPgVector`
+that take care of spinning-up a pgvector database with the `vector` extension pre-installed.
+
+### Example
+
+```java
+@Entity
+class ExampleEntity {
+    @Id
+    private Long id;
+
+    @Column
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Array(length = 768)
+    private float[] vectorData;
+}
+```
+
+```java
+class LiquibaseTest implements JUnit5ValidationFileAssertions {
+    @Test
+    void testLiquibaseAndHibernatePopulationsAreConsistent() {
+        HibernateToLiquibaseDiff hibernateToLiquibaseDiff = new HibernateToLiquibaseDiffForPostgres("My Author");
+        String diff = hibernateToLiquibaseDiff.generateDiff(HibernatePopulatedConfig.class, LiquibasePopulatedConfig.class);
+        assertWithFile(diff, FileExtensions.XML);
+    }
+
+    @EntityScan("de.cronn.example")
+    static class HibernatePopulatedConfig extends HibernatePopulatedConfigForPgVector {
+    }
+
+    @PropertySource("classpath:/liquibase-test-liquibase.properties")
+    static class LiquibasePopulatedConfig extends LiquibasePopulatedConfigForPgVector {
+    }
+}
 ```
 
 ## Steps to Change/Extend the Database Schema
@@ -139,3 +180,4 @@ class HibernateSchemaTest implements JUnit5ValidationFileAssertions {
 [testcontainers]: https://testcontainers.com/
 [liquibase-diff]: https://docs.liquibase.com/commands/inspection/diff-changelog.html
 [validation-file-assertions]: https://github.com/cronn/validation-file-assertions
+[hibernate-vector]: https://docs.jboss.org/hibernate/orm/6.6/userguide/html_single/Hibernate_User_Guide.html#vector-module
