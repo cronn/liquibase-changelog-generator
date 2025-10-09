@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.Database;
@@ -41,9 +41,9 @@ public abstract class HibernateToLiquibaseDiff {
 
 	public String generateDiff(Class<? extends AbstractHibernatePopulatedConfig> hibernatePopulatedConfigClass,
 							   Class<? extends AbstractLiquibasePopulatedConfig> liquibasePopulatedConfigClass) {
-		try (AnnotationConfigApplicationContext hibernatePopulatedContext = new AnnotationConfigApplicationContext(hibernatePopulatedConfigClass);
+		try (ConfigurableApplicationContext hibernatePopulatedContext = new AnnotationConfigApplicationContext(hibernatePopulatedConfigClass);
 			 Connection hibernatePopulatedConnection = getConnection(hibernatePopulatedContext);
-			 AnnotationConfigApplicationContext liquibasePopulatedContext = new AnnotationConfigApplicationContext(liquibasePopulatedConfigClass);
+			 ConfigurableApplicationContext liquibasePopulatedContext = new AnnotationConfigApplicationContext(liquibasePopulatedConfigClass);
 			 Connection liquibasePopulatedConnection = getConnection(liquibasePopulatedContext)) {
 			DiffResult diffResult = generateDiff(hibernatePopulatedConnection, liquibasePopulatedConnection);
 			return writeDiffResultToChangeLog(diffResult);
@@ -52,7 +52,7 @@ public abstract class HibernateToLiquibaseDiff {
 		}
 	}
 
-	protected Connection getConnection(GenericApplicationContext context) throws Exception {
+	protected Connection getConnection(ConfigurableApplicationContext context) throws Exception {
 		return context.getBean(DataSource.class).getConnection();
 	}
 
