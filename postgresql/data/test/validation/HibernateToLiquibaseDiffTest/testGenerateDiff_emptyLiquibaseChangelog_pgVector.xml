@@ -8,4 +8,9 @@
             <column name="vector_data" type="VECTOR"/>
         </createTable>
     </changeSet>
+    <changeSet author="Jane Doe" id="[MASKED]-2">
+        <createIndex indexName="idx_entity_with_vector_vector_data" tableName="entity_with_vector">
+            <column name="vector_data"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
