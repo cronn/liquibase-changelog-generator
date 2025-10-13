@@ -20,6 +20,7 @@ plugins {
     id "java-test-fixtures"
     id 'org.springframework.boot' version 'latest.release' apply false
     id 'io.spring.dependency-management' version 'latest.release' apply false
+    id 'org.jreleaser' version 'latest.release'
 }
 
 allprojects {
@@ -181,11 +182,8 @@ allprojects {
         }
         repositories {
             maven {
-                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-                credentials {
-                    username = project.hasProperty('nexusUsername') ? project.property('nexusUsername') : System.getenv('NEXUS_USERNAME')
-                    password = project.hasProperty('nexusPassword') ? project.property('nexusPassword') : System.getenv('NEXUS_PASSWORD')
-                }
+                name = 'staging'
+                url = layout.buildDirectory.dir('staging-deploy')
             }
         }
     }
@@ -193,5 +191,27 @@ allprojects {
     signing {
         useGpgCmd()
         sign publishing.publications.mavenJava
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'NEVER'
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'RELEASE'
+                    sign = false
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    allprojects.each { p ->
+                        stagingRepository p.layout.buildDirectory
+                            .dir("staging-deploy")
+                            .get().asFile.path
+                    }
+                }
+            }
+        }
     }
 }
