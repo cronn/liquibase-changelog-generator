@@ -19,7 +19,7 @@ Depending on the database, you need to add the following Maven **test** dependen
 <dependency>
     <groupId>de.cronn</groupId>
     <artifactId>liquibase-changelog-generator-postgresql</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <scope>test</scope>
 </dependency>
 ```
