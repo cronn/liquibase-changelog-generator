@@ -119,7 +119,7 @@ components.java.withVariantsFromConfiguration(configurations.testFixturesApiElem
 components.java.withVariantsFromConfiguration(configurations.testFixturesRuntimeElements) { skip() }
 
 wrapper {
-    gradleVersion = "9.1.0"
+    gradleVersion = "9.2.1"
     distributionType = Wrapper.DistributionType.ALL
 }
 
