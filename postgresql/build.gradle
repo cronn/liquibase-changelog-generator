@@ -1,10 +1,10 @@
 dependencies {
     api rootProject
 
-    runtimeOnly 'org.testcontainers:postgresql'
+    runtimeOnly 'org.testcontainers:testcontainers-postgresql:latest.release'
     runtimeOnly 'org.postgresql:postgresql'
 
-    testRuntimeOnly 'org.hibernate.orm:hibernate-vector:[6.6, 7.0)'
+    testRuntimeOnly 'org.hibernate.orm:hibernate-vector:latest.release'
 
     testImplementation testFixtures(rootProject)
 }

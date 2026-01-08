@@ -9,7 +9,7 @@
         </createTable>
     </changeSet>
     <changeSet author="Jane Doe" id="[MASKED]-2">
-        <createIndex indexName="idx_entity_with_vector_vector_data" tableName="entity_with_vector">
+        <createIndex indexName="idx_entity_with_vector_vector_data" tableName="entity_with_vector" using="btree">
             <column name="vector_data"/>
         </createIndex>
     </changeSet>
