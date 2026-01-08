@@ -99,8 +99,12 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.slf4j:jul-to-slf4j'
 
+    implementation 'org.springframework.boot:spring-boot-jdbc' // For DataSourceAutoConfiguration
+    implementation 'org.springframework.boot:spring-boot-hibernate' // For HibernateJpaAutoConfiguration
+    implementation 'org.springframework.boot:spring-boot-liquibase' // For LiquibaseAutoConfiguration
+
     api 'org.liquibase:liquibase-core'
-    implementation 'org.testcontainers:jdbc'
+    implementation 'org.testcontainers:testcontainers-jdbc:latest.release'
 
     implementation 'org.hibernate.orm:hibernate-core'
 

@@ -9,7 +9,7 @@
         </createTable>
 
         <sql>
-            CREATE INDEX ON entity_with_vector
+            CREATE INDEX idx_vector_data ON entity_with_vector
                 USING hnsw (vector_data vector_cosine_ops)
                 WITH (m = 16, ef_construction = 200);
         </sql>
