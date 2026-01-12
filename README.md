@@ -28,10 +28,10 @@ Depending on the database, you need to add the following Maven **test** dependen
 
 This library follows the major version of Spring Boot:
 
-| Library Version | Spring Boot | Jakarta EE | Hibernate | Liquibase |
-|-----------------|-------------|------------|-----------|-----------|
-| 1.x             | 3.x         | 10 (JPA 3.1) | 6.x     | 4.x       |
-| 2.x             | 4.x         | 11 (JPA 3.2) | 7.x     | 5.x       |
+| Library Version | Spring Boot | Jakarta EE   | Hibernate | Liquibase |
+|-----------------|-------------|--------------|-----------|-----------|
+| 1.x             | 3.x         | 10 (JPA 3.1) | 6.x       | 4.x       |
+| 2.x             | 4.x         | 11 (JPA 3.2) | 7.x       | 5.x       |
 
 Spring Boot 4 introduced breaking changes that require a separate major version:
 - **Modularization**: Auto-configuration split into focused modules (`spring-boot-jdbc`, `spring-boot-hibernate`, `spring-boot-liquibase`)
