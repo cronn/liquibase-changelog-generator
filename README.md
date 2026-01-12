@@ -11,7 +11,7 @@ based on the JPA/Hibernate entities. The library was designed to be used in a JU
 
 ## Usage
 
-Depending on the database, you need to add the following Maven **test** dependency to your project:
+Depending on the database, you need to add the following Maven **test** dependency to your project (see [Versioning](#versioning) for version selection):
 
 ### PostgreSQL / pgvector
 
@@ -23,6 +23,23 @@ Depending on the database, you need to add the following Maven **test** dependen
     <scope>test</scope>
 </dependency>
 ```
+
+## Versioning
+
+This library follows the major version of Spring Boot:
+
+| Library Version | Spring Boot | Jakarta EE | Hibernate | Liquibase |
+|-----------------|-------------|------------|-----------|-----------|
+| 1.x             | 3.x         | 10 (JPA 3.1) | 6.x     | 4.x       |
+| 2.x             | 4.x         | 11 (JPA 3.2) | 7.x     | 5.x       |
+
+Spring Boot 4 introduced breaking changes that require a separate major version:
+- **Modularization**: Auto-configuration split into focused modules (`spring-boot-jdbc`, `spring-boot-hibernate`, `spring-boot-liquibase`)
+- **Hibernate 7**: Redesigned metadata and schema export engine
+- **Liquibase 5**: Major version upgrade with API changes
+- **Jakarta EE 11**: JPA 3.2 with binary-incompatible interface changes
+
+Choose the library version matching your Spring Boot version. When upgrading to Spring Boot 4, switch to version 2.x.
 
 ## Overview
 
