@@ -30,7 +30,7 @@ allprojects {
     apply plugin: 'org.springframework.boot'
 
     group = 'de.cronn'
-    version = '1.2-SNAPSHOT'
+    version = '2.0'
 
     repositories {
         mavenCentral()

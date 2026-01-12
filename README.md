@@ -19,7 +19,7 @@ Depending on the database, you need to add the following Maven **test** dependen
 <dependency>
     <groupId>de.cronn</groupId>
     <artifactId>liquibase-changelog-generator-postgresql</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -186,9 +186,9 @@ class HibernateSchemaTest implements JUnit5ValidationFileAssertions {
 ## Requirements ##
 
 - Java 17+
-- Spring Boot 3.5.6+
-- Liquibase 4.31.1+
-- Hibernate 6.6.29+
+- Spring Boot 4.0.1+
+- Liquibase 5.0.1+
+- Hibernate 7.2.0+
 
 ## Related Projects ##
 
