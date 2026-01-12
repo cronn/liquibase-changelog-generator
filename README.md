@@ -1,5 +1,5 @@
 [![CI](https://github.com/cronn/liquibase-changelog-generator/workflows/CI/badge.svg)](https://github.com/cronn/liquibase-changelog-generator/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.cronn/liquibase-changelog-generator/badge.svg)](http://maven-badges.herokuapp.com/maven-central/de.cronn/liquibase-changelog-generator)
+[![Maven Central](https://img.shields.io/maven-central/v/de.cronn/liquibase-changelog-generator?logo=apache%20maven)](https://search.maven.org/#search|ga|1|g:de.cronn%20AND%20liquibase-changelog-generator)
 [![Apache 2.0](https://img.shields.io/github/license/cronn/liquibase-changelog-generator.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![codecov](https://codecov.io/gh/cronn/liquibase-changelog-generator/branch/main/graph/badge.svg?token=KD1WJK5ZFK)](https://codecov.io/gh/cronn/liquibase-changelog-generator)
 [![Valid Gradle Wrapper](https://github.com/cronn/liquibase-changelog-generator/workflows/Validate%20Gradle%20Wrapper/badge.svg)](https://github.com/cronn/liquibase-changelog-generator/actions/workflows/gradle-wrapper-validation.yml)
