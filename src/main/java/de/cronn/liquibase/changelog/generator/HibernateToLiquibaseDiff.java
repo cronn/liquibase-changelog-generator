@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -13,14 +11,12 @@ import javax.sql.DataSource;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.testcontainers.shaded.com.google.common.collect.Iterables;
 
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.diff.DiffGeneratorFactory;
 import liquibase.diff.DiffResult;
-import liquibase.diff.Difference;
 import liquibase.diff.ObjectDifferences;
 import liquibase.diff.compare.CompareControl;
 import liquibase.diff.output.DiffOutputControl;
@@ -34,8 +30,6 @@ import liquibase.structure.core.PrimaryKey;
 import liquibase.structure.core.Table;
 
 public abstract class HibernateToLiquibaseDiff {
-
-	private static final Set<String> WELL_KNOWN_PGVECTOR_INDEX_TYPES = Set.of("hnsw", "ivfflat");
 
 	private final String changeSetAuthor;
 
@@ -93,22 +87,7 @@ public abstract class HibernateToLiquibaseDiff {
 	}
 
 	protected void handleChangedObject(DiffResult result, DatabaseObject obj, ObjectDifferences differences) {
-		if (isFalsePositiveVectorIndexTypeChange(obj, differences)) {
-			return;
-		}
 		result.addChangedObject(obj, differences);
-	}
-
-	// Filter out pgvector index type changes (btree → hnsw/ivfflat)
-	private static boolean isFalsePositiveVectorIndexTypeChange(DatabaseObject obj, ObjectDifferences differences) {
-		if (!(obj instanceof Index) || differences.getDifferences().size() != 1) {
-			return false;
-		}
-
-		Difference difference = Iterables.getOnlyElement(differences.getDifferences());
-		return difference.getField().equalsIgnoreCase("using")
-			   && difference.getReferenceValue().toString().equalsIgnoreCase("btree")
-			   && WELL_KNOWN_PGVECTOR_INDEX_TYPES.contains(difference.getComparedValue().toString().toLowerCase(Locale.ROOT));
 	}
 
 	protected void handleMissingObject(DiffResult result, DatabaseObject obj) {
