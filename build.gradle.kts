@@ -12,6 +12,7 @@ plugins {
     id("org.springframework.boot") version "latest.release" apply false
     id("io.spring.dependency-management") version "latest.release" apply false
     id("org.jreleaser") version "latest.release"
+    id("com.diffplug.spotless") version "latest.release"
 }
 
 allprojects {
@@ -206,3 +207,16 @@ jreleaser {
     }
 }
 
+spotless {
+    java {
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        ktlint()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

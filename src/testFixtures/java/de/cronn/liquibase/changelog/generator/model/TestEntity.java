@@ -7,14 +7,13 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class TestEntity {
-	@Id
-	private Long id;
+  @Id private Long id;
 
-	@Column(nullable = false, unique = true)
-	private String name;
+  @Column(nullable = false, unique = true)
+  private String name;
 
-	private String description;
+  private String description;
 
-	@ManyToOne(optional = false)
-	private OtherEntity other;
+  @ManyToOne(optional = false)
+  private OtherEntity other;
 }
