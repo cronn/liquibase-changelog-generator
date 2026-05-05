@@ -1,5 +1,0 @@
-rootProject.name = "liquibase-changelog-generator"
-
-include "postgresql"
-
-rootProject.children.each { it.name = rootProject.name + "-" + it.name }
