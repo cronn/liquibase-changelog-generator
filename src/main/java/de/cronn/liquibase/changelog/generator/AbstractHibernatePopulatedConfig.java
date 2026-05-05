@@ -5,7 +5,6 @@ import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfigur
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.PropertySource;
 
-@ImportAutoConfiguration({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@ImportAutoConfiguration({DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @PropertySource("classpath:/de/cronn/liquibase/changelog/generator/hibernate-populated.properties")
-public abstract class AbstractHibernatePopulatedConfig {
-}
+public abstract class AbstractHibernatePopulatedConfig {}
