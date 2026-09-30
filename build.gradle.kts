@@ -81,17 +81,19 @@ allprojects {
         dependsOn(tasks.named("test"))
     }
 
-    val sourcesJar by tasks.registering(Jar::class) {
-        archiveClassifier = "sources"
-        from(project.extensions.getByType<SourceSetContainer>()["main"].allSource)
-        dependsOn(tasks.named("classes"))
-    }
+    val sourcesJar =
+        tasks.register<Jar>("sourcesJar") {
+            archiveClassifier = "sources"
+            from(project.extensions.getByType<SourceSetContainer>()["main"].allSource)
+            dependsOn(tasks.named("classes"))
+        }
 
-    val javadocJar by tasks.registering(Jar::class) {
-        archiveClassifier = "javadoc"
-        from(tasks.named("javadoc", Javadoc::class).get().destinationDir)
-        dependsOn(tasks.named("javadoc"))
-    }
+    val javadocJar =
+        tasks.register<Jar>("javadocJar") {
+            archiveClassifier = "javadoc"
+            from(tasks.named("javadoc", Javadoc::class).get().destinationDir)
+            dependsOn(tasks.named("javadoc"))
+        }
 
     extensions.configure<PublishingExtension> {
         publications {
@@ -178,7 +180,7 @@ javaComponent.withVariantsFromConfiguration(configurations["testFixturesApiEleme
 javaComponent.withVariantsFromConfiguration(configurations["testFixturesRuntimeElements"]) { skip() }
 
 tasks.wrapper {
-    gradleVersion = "9.5.0"
+    gradleVersion = "9.8.0"
     distributionType = Wrapper.DistributionType.ALL
 }
 
