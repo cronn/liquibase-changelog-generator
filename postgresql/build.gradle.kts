@@ -1,10 +1,10 @@
 dependencies {
-    api(rootProject)
+    api(project(":"))
 
     runtimeOnly("org.testcontainers:testcontainers-postgresql:latest.release")
     runtimeOnly("org.postgresql:postgresql")
 
     testRuntimeOnly("org.hibernate.orm:hibernate-vector")
 
-    testImplementation(testFixtures(rootProject))
+    testImplementation(testFixtures(project(":")))
 }
