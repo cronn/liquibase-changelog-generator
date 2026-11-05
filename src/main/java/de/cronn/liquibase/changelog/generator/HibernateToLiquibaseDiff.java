@@ -77,10 +77,9 @@ public abstract class HibernateToLiquibaseDiff {
 
     diffResult
         .getChangedObjects()
-        .forEach(
-            (obj, differences) -> {
-              handleChangedObject(result, obj, differences);
-            });
+        .forEach((obj, differences) -> {
+          handleChangedObject(result, obj, differences);
+        });
 
     for (DatabaseObject obj : diffResult.getMissingObjects()) {
       handleMissingObject(result, obj);
