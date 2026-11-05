@@ -79,12 +79,11 @@ public class HibernateSchemaExport {
 
   protected String normalizeIndentations(String schemaExport) {
     return Arrays.stream(schemaExport.split("\r?\n"))
-        .map(
-            line -> {
-              line = line.replaceFirst("^ {4}", "");
-              line = line.replaceFirst("^ {3}(\\w)", "    $1");
-              return StringUtils.stripEnd(line, null);
-            })
+        .map(line -> {
+          line = line.replaceFirst("^ {4}", "");
+          line = line.replaceFirst("^ {3}(\\w)", "    $1");
+          return StringUtils.stripEnd(line, null);
+        })
         .collect(Collectors.joining("\n"));
   }
 
