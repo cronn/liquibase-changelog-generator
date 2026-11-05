@@ -13,6 +13,7 @@ plugins {
     id("io.spring.dependency-management") version "latest.release" apply false
     id("org.jreleaser") version "latest.release"
     id("com.diffplug.spotless") version "latest.release"
+    id("de.cronn.validation-files") version "latest.release" apply false
 }
 
 allprojects {
@@ -69,9 +70,6 @@ allprojects {
     tasks.named("test", Test::class) {
         useJUnitPlatform()
         maxHeapSize = "256m"
-        inputs.dir("data/test/validation")
-        outputs.dir("data/test/output")
-        outputs.dir("data/test/tmp")
     }
 
     tasks.named("jacocoTestReport", JacocoReport::class) {

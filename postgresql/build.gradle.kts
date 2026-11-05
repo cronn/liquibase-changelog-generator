@@ -1,3 +1,7 @@
+plugins {
+    id("de.cronn.validation-files")
+}
+
 dependencies {
     api(project(":"))
 
